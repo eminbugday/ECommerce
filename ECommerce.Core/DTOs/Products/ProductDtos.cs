@@ -34,7 +34,6 @@ public class ProductCreateDto
 
 public class ProductUpdateDto : ProductCreateDto { }
 
-/// <summary>Ürün filtreleme parametreleri (query string'den gelir).</summary>
 public class ProductFilterDto
 {
     public string? Search { get; set; }

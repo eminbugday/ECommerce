@@ -23,7 +23,6 @@ public class LoginDto
     public string Password { get; set; } = string.Empty;
 }
 
-/// <summary>Login/Register sonrası dönen token ve temel kullanıcı bilgisi.</summary>
 public class AuthResponseDto
 {
     public string Token { get; set; } = string.Empty;

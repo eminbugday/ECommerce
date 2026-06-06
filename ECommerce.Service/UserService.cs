@@ -4,8 +4,6 @@ using ECommerce.Core.Interfaces;
 using ECommerce.Core.Services;
 
 namespace ECommerce.Service;
-
-/// <summary>Admin panelinin kullanıcı yönetimi mantığı.</summary>
 public class UserService : IUserService
 {
     private readonly IUnitOfWork _uow;

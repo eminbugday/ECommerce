@@ -1,8 +1,4 @@
 namespace ECommerce.Core.Entities;
-
-/// <summary>
-/// Sipariş içindeki tek bir ürün satırı (sepet kalemi).
-/// </summary>
 public class OrderItem : BaseEntity
 {
     public int OrderId { get; set; }

@@ -4,10 +4,6 @@ using ECommerce.Core.Interfaces;
 using Microsoft.EntityFrameworkCore;
 
 namespace ECommerce.Repository;
-
-/// <summary>
-/// IGenericRepository'nin EF Core implementasyonu. Tek bir sınıf tüm entity'lere hizmet eder.
-/// </summary>
 public class GenericRepository<T> : IGenericRepository<T> where T : BaseEntity
 {
     protected readonly AppDbContext _context;

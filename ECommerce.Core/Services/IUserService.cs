@@ -1,8 +1,6 @@
 using ECommerce.Core.DTOs.Users;
 
 namespace ECommerce.Core.Services;
-
-/// <summary>Admin panelindeki kullanıcı yönetimi (listele / ekle / düzenle / sil).</summary>
 public interface IUserService
 {
     Task<IReadOnlyList<UserDto>> GetAllAsync();

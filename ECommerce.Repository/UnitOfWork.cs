@@ -4,9 +4,6 @@ using ECommerce.Core.Interfaces;
 
 namespace ECommerce.Repository;
 
-/// <summary>
-/// Tüm repository'leri tek DbContext üzerinden paylaştırır ve SaveChanges'i merkezi yapar.
-/// </summary>
 public class UnitOfWork : IUnitOfWork
 {
     private readonly AppDbContext _context;

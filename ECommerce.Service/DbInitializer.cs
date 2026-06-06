@@ -11,7 +11,6 @@ public static class DbInitializer
 
     public static async Task SeedAsync(AppDbContext context)
     {
-        // Admin user
         if (!await context.Users.AnyAsync(u => u.Role == UserRole.Admin))
         {
             context.Users.Add(new User
@@ -25,7 +24,6 @@ public static class DbInitializer
             await context.SaveChangesAsync();
         }
 
-        // "Otomotiv" category — seeded at runtime so no migration needed
         var autoCat = await context.Categories.FirstOrDefaultAsync(c => c.Name == "Otomotiv");
         if (autoCat == null)
         {
@@ -34,7 +32,6 @@ public static class DbInitializer
             await context.SaveChangesAsync();
         }
 
-        // Car products (only if no car products exist yet)
         if (!await context.Products.AnyAsync(p => p.CategoryId == autoCat.Id))
         {
             context.Products.AddRange(

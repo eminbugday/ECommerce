@@ -2,7 +2,6 @@ using System.ComponentModel.DataAnnotations;
 
 namespace ECommerce.Core.DTOs.Users;
 
-/// <summary>Admin panelinde listelenen kullanıcı satırı (şifre dönülmez).</summary>
 public class UserDto
 {
     public int Id { get; set; }
@@ -13,7 +12,6 @@ public class UserDto
     public DateTime CreatedDate { get; set; }
 }
 
-/// <summary>Admin yeni kullanıcı eklerken.</summary>
 public class UserCreateDto
 {
     [Required, MaxLength(100)]
@@ -24,12 +22,9 @@ public class UserCreateDto
 
     [Required, MinLength(6)]
     public string Password { get; set; } = string.Empty;
-
-    /// <summary>"Admin" veya "Customer".</summary>
     public string Role { get; set; } = "Customer";
 }
 
-/// <summary>Admin kalem (düzenle) butonuyla kullanıcı güncellerken.</summary>
 public class UserUpdateDto
 {
     [Required, MaxLength(100)]

@@ -1,8 +1,4 @@
 namespace ECommerce.Core.Entities;
-
-/// <summary>
-/// Satışa sunulan ürün.
-/// </summary>
 public class Product : BaseEntity
 {
     public string Name { get; set; } = string.Empty;

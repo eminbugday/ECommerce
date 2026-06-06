@@ -13,7 +13,6 @@ public class ProductService : IProductService
 
     public async Task<IReadOnlyList<ProductDto>> GetAllAsync(ProductFilterDto filter)
     {
-        // Generic repository'nin Query()'si üzerinden filtreli sorgu kurulur.
         var query = _uow.Repository<Product>().Query()
             .Include(p => p.Category)
             .AsNoTracking()

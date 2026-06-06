@@ -5,17 +5,16 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace ECommerce.API.Controllers;
 
-/// <summary>
-/// Admin panelinin kullanıcı yönetimi. Sadece Admin rolü erişebilir.
-/// (Listele / Ekle / Düzenle [kalem butonu] / Sil)
-/// </summary>
 [ApiController]
 [Route("api/[controller]")]
 [Authorize(Roles = "Admin")]
 public class UsersController : ControllerBase
 {
     private readonly IUserService _userService;
-    public UsersController(IUserService userService) => _userService = userService;
+    public UsersController(IUserService userService)
+    {
+        _userService = userService;
+    }
 
     [HttpGet]
     public async Task<IActionResult> GetAll() => Ok(await _userService.GetAllAsync());

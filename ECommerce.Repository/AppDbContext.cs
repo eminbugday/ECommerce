@@ -3,9 +3,6 @@ using Microsoft.EntityFrameworkCore;
 
 namespace ECommerce.Repository;
 
-/// <summary>
-/// EF Core veritabanı bağlamı. PostgreSQL ile çalışır (Program.cs'te UseNpgsql).
-/// </summary>
 public class AppDbContext : DbContext
 {
     public AppDbContext(DbContextOptions<AppDbContext> options) : base(options) { }
@@ -64,7 +61,6 @@ public class AppDbContext : DbContext
              .OnDelete(DeleteBehavior.Restrict);
         });
 
-        // Başlangıç kategorileri (sabit -> HasData ile migration'a gömülür)
         b.Entity<Category>().HasData(
             new Category { Id = 1, Name = "Elektronik", CreatedDate = new DateTime(2024, 1, 1, 0, 0, 0, DateTimeKind.Utc) },
             new Category { Id = 2, Name = "Giyim", CreatedDate = new DateTime(2024, 1, 1, 0, 0, 0, DateTimeKind.Utc) },

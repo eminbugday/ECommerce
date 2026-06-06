@@ -10,9 +10,11 @@ namespace ECommerce.API.Controllers;
 public class ProductsController : ControllerBase   
 {
     private readonly IProductService _productService;
-    public ProductsController(IProductService productService) => _productService = productService;
+    public ProductsController(IProductService productService)
+    {
+        _productService = productService;
+    }
 
-    /// <summary>Ürün listesi + filtreleme (herkese açık). Örn: /api/products?search=kulak&categoryId=1&minPrice=100</summary>
     [HttpGet]
     [AllowAnonymous]
     public async Task<IActionResult> GetAll([FromQuery] ProductFilterDto filter) =>
