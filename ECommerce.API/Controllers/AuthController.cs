@@ -19,6 +19,11 @@ public class AuthController : ControllerBase
     [AllowAnonymous]
     public async Task<IActionResult> Register(RegisterDto dto)
     {
+        if (!ModelState.IsValid)
+            return BadRequest(new { message = ModelState.Values
+                .SelectMany(v => v.Errors)
+                .Select(e => e.ErrorMessage)
+                .FirstOrDefault() });
         try
         {
             return Ok(await _authService.RegisterAsync(dto));
@@ -40,6 +45,40 @@ public class AuthController : ControllerBase
         catch (UnauthorizedAccessException ex)
         {
             return Unauthorized(new { message = ex.Message });
+        }
+    }
+
+    [HttpPost("forgot-password")]
+    [AllowAnonymous]
+    public async Task<IActionResult> ForgotPassword(ForgotPasswordDto dto)
+    {
+        try
+        {
+            return Ok(await _authService.ForgotPasswordAsync(dto));
+        }
+        catch (InvalidOperationException ex)
+        {
+            return BadRequest(new { message = ex.Message });
+        }
+    }
+
+    [HttpPost("reset-password")]
+    [AllowAnonymous]
+    public async Task<IActionResult> ResetPassword(ResetPasswordDto dto)
+    {
+        if (!ModelState.IsValid)
+            return BadRequest(new { message = ModelState.Values
+                .SelectMany(v => v.Errors)
+                .Select(e => e.ErrorMessage)
+                .FirstOrDefault() });
+        try
+        {
+            var result = await _authService.ResetPasswordAsync(dto);
+            return Ok(new { message = result });
+        }
+        catch (InvalidOperationException ex)
+        {
+            return BadRequest(new { message = ex.Message });
         }
     }
 }

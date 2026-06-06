@@ -10,7 +10,10 @@ public class RegisterDto
     [Required, EmailAddress]
     public string Email { get; set; } = string.Empty;
 
-    [Required, MinLength(6)]
+    // En az 8 karakter, 1 büyük harf, 1 küçük harf, 1 rakam
+    [Required]
+    [RegularExpression(@"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$",
+        ErrorMessage = "Şifre en az 8 karakter olmalı ve büyük harf, küçük harf ile rakam içermelidir.")]
     public string Password { get; set; } = string.Empty;
 }
 
@@ -31,4 +34,31 @@ public class AuthResponseDto
     public string FullName { get; set; } = string.Empty;
     public string Email { get; set; } = string.Empty;
     public string Role { get; set; } = string.Empty;
+}
+
+public class ForgotPasswordDto
+{
+    [Required, EmailAddress]
+    public string Email { get; set; } = string.Empty;
+}
+
+public class ForgotPasswordResponseDto
+{
+    public string Message { get; set; } = string.Empty;
+    // Demo: gerçek uygulamada e-posta ile gönderilir, burada response'da döner
+    public string ResetCode { get; set; } = string.Empty;
+}
+
+public class ResetPasswordDto
+{
+    [Required, EmailAddress]
+    public string Email { get; set; } = string.Empty;
+
+    [Required]
+    public string ResetCode { get; set; } = string.Empty;
+
+    [Required]
+    [RegularExpression(@"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$",
+        ErrorMessage = "Şifre en az 8 karakter olmalı ve büyük harf, küçük harf ile rakam içermelidir.")]
+    public string NewPassword { get; set; } = string.Empty;
 }

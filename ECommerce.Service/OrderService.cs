@@ -19,11 +19,10 @@ public class OrderService : IOrderService
             UserId = userId,
             ShippingAddress = dto.ShippingAddress,
             CardHolderName = dto.CardHolderName,
-            Status = OrderStatus.Paid // ödeme simülasyonu başarılı kabul edilir
+            Status = OrderStatus.Pending // Admin onayına düşer
         };
 
         decimal total = 0m;
-
         foreach (var item in dto.Items)
         {
             var product = await productRepo.GetByIdAsync(item.ProductId)
@@ -41,16 +40,44 @@ public class OrderService : IOrderService
                 Quantity = item.Quantity,
                 UnitPrice = product.Price
             });
-
             total += product.Price * item.Quantity;
         }
 
         order.TotalAmount = total;
-
         await _uow.Repository<Order>().AddAsync(order);
         await _uow.SaveChangesAsync();
 
         return (await GetByIdInternalAsync(order.Id))!;
+    }
+
+    public async Task<OrderDto> ApproveAsync(int orderId)
+    {
+        var order = await _uow.Repository<Order>().GetByIdAsync(orderId)
+            ?? throw new InvalidOperationException("Sipariş bulunamadı.");
+
+        if (order.Status != OrderStatus.Pending)
+            throw new InvalidOperationException("Yalnızca bekleyen siparişler onaylanabilir.");
+
+        order.Status = OrderStatus.Paid;
+        _uow.Repository<Order>().Update(order);
+        await _uow.SaveChangesAsync();
+
+        return (await GetByIdInternalAsync(orderId))!;
+    }
+
+    public async Task<OrderDto> RejectAsync(int orderId)
+    {
+        var order = await _uow.Repository<Order>().GetByIdAsync(orderId)
+            ?? throw new InvalidOperationException("Sipariş bulunamadı.");
+
+        if (order.Status != OrderStatus.Pending)
+            throw new InvalidOperationException("Yalnızca bekleyen siparişler reddedilebilir.");
+
+        order.Status = OrderStatus.Cancelled;
+        _uow.Repository<Order>().Update(order);
+        await _uow.SaveChangesAsync();
+
+        return (await GetByIdInternalAsync(orderId))!;
     }
 
     public async Task<IReadOnlyList<OrderDto>> GetMyOrdersAsync(int userId)
@@ -73,6 +100,7 @@ public class OrderService : IOrderService
     private IQueryable<Order> OrdersWithItems() =>
         _uow.Repository<Order>().Query()
             .Include(o => o.Items).ThenInclude(i => i.Product)
+            .Include(o => o.User)
             .AsNoTracking();
 
     private async Task<OrderDto?> GetByIdInternalAsync(int id)
@@ -85,6 +113,8 @@ public class OrderService : IOrderService
     {
         Id = o.Id,
         UserId = o.UserId,
+        UserFullName = o.User?.FullName ?? string.Empty,
+        UserEmail = o.User?.Email ?? string.Empty,
         TotalAmount = o.TotalAmount,
         Status = o.Status.ToString(),
         ShippingAddress = o.ShippingAddress,

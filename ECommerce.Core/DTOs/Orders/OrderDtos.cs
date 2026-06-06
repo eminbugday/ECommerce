@@ -22,7 +22,7 @@ public class CreateOrderDto
     [Required]
     public string CardHolderName { get; set; } = string.Empty;
 
-    [Required, CreditCard]
+    [Required, StringLength(16, MinimumLength = 16, ErrorMessage = "Kart numarası 16 hane olmalıdır.")]
     public string CardNumber { get; set; } = string.Empty;
 }
 
@@ -39,9 +39,17 @@ public class OrderDto
 {
     public int Id { get; set; }
     public int UserId { get; set; }
+    public string UserFullName { get; set; } = string.Empty;
+    public string UserEmail { get; set; } = string.Empty;
     public decimal TotalAmount { get; set; }
     public string Status { get; set; } = string.Empty;
     public string ShippingAddress { get; set; } = string.Empty;
     public DateTime CreatedDate { get; set; }
     public List<OrderItemDto> Items { get; set; } = new();
+}
+
+public class ApproveOrderDto
+{
+    public bool Approved { get; set; }
+    public string? RejectionReason { get; set; }
 }
