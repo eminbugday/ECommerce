@@ -10,7 +10,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 // 1) Veritabanı (PostgreSQL)
 builder.Services.AddDbContext<AppDbContext>(options =>
-    options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
+    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 // 2) Uygulama servisleri (Generic Repository, UnitOfWork, iş servisleri)
 builder.Services.Configure<JwtSettings>(builder.Configuration.GetSection("Jwt"));
